@@ -47,7 +47,7 @@ export default class PokeList extends Component {
             style={{width: 32, height: 32}}
             onPress={() => {
               // console.log("You selected!". p.pokemon_species.name);
-              Actions.pokedetail({pokeid: p.entry_number});
+              Actions.pokedetail({poke_entry: p});
             }}>
             <Text style={{flex: 1, fontSize: 16}}>{p.entry_number}:  {p.pokemon_species.name}</Text>
           </CustomCell>
