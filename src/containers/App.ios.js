@@ -11,6 +11,7 @@ import React, {
 import {Actions, Scene, Router} from 'react-native-router-flux';
 import Home from '../components/Home';
 import PokeList from '../components/PokeList';
+import PokeDetail from '../components/PokeDetail';
 
 export default class App extends Component {
   render() {
@@ -19,6 +20,7 @@ export default class App extends Component {
         <Scene key="root">
             <Scene key="home" hideNavBar={true} component={Home}/>
             <Scene key="pokelist" component={PokeList} title='PokeDex'/>
+            <Scene key="pokedetail" component={PokeDetail} title='Detail'/>
         </Scene>
       </Router>
     );

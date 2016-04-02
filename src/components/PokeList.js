@@ -12,6 +12,7 @@ import {
   Section,
   TableView
 } from 'react-native-tableview-simple';
+import {Actions} from 'react-native-router-flux';
 
 export default class PokeList extends Component {
   constructor(props) {
@@ -45,7 +46,8 @@ export default class PokeList extends Component {
             key={p.entry_number}
             style={{width: 32, height: 32}}
             onPress={() => {
-              console.log("You selected!". p.pokemon_species.name);
+              // console.log("You selected!". p.pokemon_species.name);
+              Actions.pokedetail({pokeid: p.entry_number});
             }}>
             <Text style={{flex: 1, fontSize: 16}}>{p.entry_number}:  {p.pokemon_species.name}</Text>
           </CustomCell>
