@@ -1,5 +1,4 @@
 import React, {
-  AppRegistry,
   Component,
   StyleSheet,
   Text,
@@ -18,7 +17,6 @@ export default class PokeList extends Component {
   constructor(props) {
     super(props);
     this.state = {isFetching: true};
-    // this.setState({isFetching: true});
   }
   componentDidMount() {
     fetch('http://pokeapi.co/api/v2/pokedex/2')
