@@ -1,5 +1,6 @@
 import React, {
   Component,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,11 +9,25 @@ import React, {
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 import Modal from 'react-native-modalbox';
+import { StatelessForm, InlineTextInput } from 'react-native-stateless-form';
 
 export default class PokeDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      note: null,
+      notes: []
+    }
+  }
   render() {
+    const { note, notes } = this.state;
+    const noteValid = (note && note.length > 0 ? true : false);
     return(
       <View style={styles.container}>
+        <Image style={{width: 128, height: 128}}
+          source={{
+            uri: 'https://s3.amazonaws.com/mmpokedex/red-blue/' +
+              this.props.poke_entry.entry_number + '.png' }} />
         <Text style={styles.welcome}>
           {this.props.poke_entry.pokemon_species.name}
         </Text>
@@ -22,9 +37,30 @@ export default class PokeDetail extends Component {
           position={"center"}
           ref={"noteModal"}
           >
-          <Text style={styles.instructions}>
-            Detail Modal!!!
-          </Text>
+          <StatelessForm style={{
+              flex: 1,
+              marginTop: 20,
+              backgroundColor: 'lightgray'
+            }} scrollEnabled={false}>
+            <InlineTextInput
+              title='Note'
+              placeholder='Write Awesome Note Here'
+              style={{ borderColor: 'gray' }}
+              titleStyle={{ color: 'dimgray' }}
+              inputStyle={{ color: 'slategray' }}
+              messageStyle={{ color: 'red' }}
+              value={note}
+              valid={noteValid}
+              message={note && !noteValid ? 'Please enter a note' : null}
+              onChangeText={(text) => { this.setState({note: text}) }}/>
+          </StatelessForm>
+          <Button onPress={() => {
+              console.log(this.state.note);
+              this.state.notes.push(this.state.note);
+              this.setState({note: null});
+              console.log(this.state.notes);
+              this.refs.noteModal.close();
+            }}>Save Note!</Button>
         </Modal>
       </View>
     )
