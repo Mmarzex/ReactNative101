@@ -3,7 +3,6 @@ import React, {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from 'react-native';
 import Button from 'react-native-button';
@@ -22,15 +21,24 @@ export default class PokeDetail extends Component {
   render() {
     const { note, notes } = this.state;
     const noteValid = (note && note.length > 0 ? true : false);
+    var noteViews = notes.map((n, i) => {
+      return (
+        <Text key={i} style={styles.notes}>
+          {n}
+        </Text>
+      );
+    });
+
     return(
       <View style={styles.container}>
         <Image style={{width: 128, height: 128}}
           source={{
             uri: 'https://s3.amazonaws.com/mmpokedex/red-blue/' +
               this.props.poke_entry.entry_number + '.png' }} />
-        <Text style={styles.welcome}>
-          {this.props.poke_entry.pokemon_species.name}
+        <Text style={styles.noteHeader}>
+          Notes for {this.props.poke_entry.pokemon_species.name}
         </Text>
+        {noteViews}
         <Button onPress={() => this.refs.noteModal.open()}>Add a Note!</Button>
         <Modal
           style={[modalStyles.modal, modalStyles.modal3]}
@@ -84,6 +92,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  notes: {
+    fontSize: 13,
+    textAlign: 'center',
+    margin: 10
+  },
+  noteHeader: {
+    fontSize: 14,
+    textAlign: 'center',
+    margin: 10
   },
   welcome: {
     fontSize: 20,
