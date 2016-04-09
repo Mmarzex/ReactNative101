@@ -9,15 +9,26 @@ import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 import Modal from 'react-native-modalbox';
 import { StatelessForm, InlineTextInput } from 'react-native-stateless-form';
+import MoveList from './MoveList';
 
 export default class PokeDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       note: null,
-      notes: []
+      notes: [],
+      pokeData: null
     }
   }
+
+  componentDidMount() {
+    const pokemonURL = 'http://pokeapi.co/api/v2/pokemon/'
+      + this.props.poke_entry.entry_number;
+    fetch(pokemonURL)
+      .then(r => r.json())
+      .then(d => this.setState({pokeData: d}));
+  }
+
   render() {
     const { note, notes } = this.state;
     const noteValid = (note && note.length > 0 ? true : false);
@@ -29,6 +40,8 @@ export default class PokeDetail extends Component {
       );
     });
 
+    const name = this.props.poke_entry.pokemon_species.name;
+
     return(
       <View style={styles.container}>
         <Image style={{width: 128, height: 128}}
@@ -36,12 +49,19 @@ export default class PokeDetail extends Component {
             uri: 'https://s3.amazonaws.com/mmpokedex/red-blue/' +
               this.props.poke_entry.entry_number + '.png' }} />
         <Text style={styles.noteHeader}>
-          Notes for {this.props.poke_entry.pokemon_species.name}
+          Notes for {name}
         </Text>
         {noteViews}
         <Button onPress={() => this.refs.noteModal.open()}>Add a Note!</Button>
+        <Button onPress={() => this.refs.movesModal.open()}>See {name}'s Moves</Button>
         <Modal
-          style={[modalStyles.modal, modalStyles.modal3]}
+          style={[modalStyles.moveModal]}
+          ref={"movesModal"}
+          swipeToClose={false}>
+          <MoveList pokemon={this.state.pokeData} />
+        </Modal>
+        <Modal
+          style={[modalStyles.modal, modalStyles.noteModal]}
           position={"center"}
           ref={"noteModal"}
           >
@@ -80,7 +100,10 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  modal3: {
+  moveModal: {
+    marginTop: 20
+  },
+  noteModal: {
     height: 300,
     width: 300
   }
