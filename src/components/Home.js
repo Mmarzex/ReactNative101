@@ -7,6 +7,7 @@ import React, {
 } from 'react-native';
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
+import Sound from 'react-native-sound';
 
 export default class Home extends Component {
 
@@ -15,6 +16,8 @@ export default class Home extends Component {
   }
 
   render() {
+    var pokeTheme = new Sound('pokemon.mp3', Sound.MAIN_BUNDLE, (error) => {});
+    pokeTheme.play();
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
